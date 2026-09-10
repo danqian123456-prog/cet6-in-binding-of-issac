@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items gfxroot="gfx/items/" version="1">
+    <passive
+        name="6级单词必背"
+        description="最折磨的一集"
+        gfx="collectibles/collectible_cet6_book.png"
+        quality="3"
+        tags="book"
+    />
+</items>

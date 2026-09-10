@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ItemPools>
+    <Pool Name="treasure">
+        <Item Name="6级单词必背" Weight="1" DecreaseBy="0.1" RemoveOn="0.1" />
+    </Pool>
+    <Pool Name="library">
+        <Item Name="6级单词必背" Weight="1" DecreaseBy="0.1" RemoveOn="0.1" />
+    </Pool>
+</ItemPools>
