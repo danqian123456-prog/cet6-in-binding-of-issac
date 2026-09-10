@@ -1,6 +1,6 @@
 # cet6-in-binding-of-issac
 learn english
-纯ai生成的以撒mod
+用chagpt5.6sol high生成的以撒mod
 
 30s~60s会弹出弹窗让你答题
 答对有奖励，基于以下概率：
