@@ -2,7 +2,8 @@ local CET6Mod = RegisterMod("CET-6 Vocabulary Must-Learn", 1)
 local game = Game()
 local words = include("cet6_words")
 
-local ITEM_NAME = "6级单词必背"
+local ITEM_NAME = "CET6"
+local ITEM_DISPLAY_NAME_ZH = "6级单词必背 CET6"
 local ITEM_ID = Isaac.GetItemIdByName(ITEM_NAME)
 
 local MIN_QUIZ_FRAMES = 30 * 30
@@ -14,7 +15,6 @@ local rng = RNG()
 local outcomeRng = RNG()
 local uiFont = Font()
 local panelSprite = Sprite()
-local hudIconSprite = Sprite()
 
 local quiz = {
     active = false,
@@ -500,6 +500,19 @@ function CET6Mod:OnNewRoom()
     end
 end
 
+function CET6Mod:OnPreItemTextDisplay(title, subtitle, isSticky, isCurseDisplay)
+    if Options.Language ~= "zh" or isSticky or isCurseDisplay or ITEM_ID <= 0 then
+        return nil
+    end
+
+    local config = Isaac.GetItemConfig():GetCollectible(ITEM_ID)
+    if config ~= nil and title == config.Name and subtitle == config.Description then
+        game:GetHUD():ShowItemText(ITEM_DISPLAY_NAME_ZH, subtitle)
+        return false
+    end
+    return nil
+end
+
 function CET6Mod:OnExecuteCommand(command, parameters)
     local normalized = string.lower(command)
     if normalized == "cet6give" then
@@ -535,13 +548,6 @@ local function DrawCentered(text, y, color, scale)
 end
 
 function CET6Mod:OnRender()
-    local holders = GetItemHolders()
-    if #holders > 0 then
-        local hudX = Isaac.GetScreenWidth() - 34 - Options.HUDOffset * 16
-        local hudY = 108 + Options.HUDOffset * 12
-        hudIconSprite:Render(Vector(hudX, hudY), Vector.Zero, Vector.Zero)
-    end
-
     if feedback.frames > 0 then
         local feedbackColor = feedback.good
             and KColor(0.55, 1.0, 0.55, 1.0)
@@ -584,13 +590,11 @@ end
 panelSprite:Load("gfx/ui/cet6_panel.anm2", true)
 panelSprite:Play("Idle", true)
 
-hudIconSprite:Load("gfx/ui/cet6_hud_icon.anm2", true)
-hudIconSprite:Play("Idle", true)
-
 CET6Mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, CET6Mod.OnGameStarted)
 CET6Mod:AddCallback(ModCallbacks.MC_POST_UPDATE, CET6Mod.OnUpdate)
 CET6Mod:AddCallback(ModCallbacks.MC_INPUT_ACTION, CET6Mod.OnInputAction)
 CET6Mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, CET6Mod.OnEntityDamage, EntityType.ENTITY_PLAYER)
 CET6Mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, CET6Mod.OnNewRoom)
+CET6Mod:AddCallback(ModCallbacks.MC_PRE_ITEM_TEXT_DISPLAY, CET6Mod.OnPreItemTextDisplay)
 CET6Mod:AddCallback(ModCallbacks.MC_POST_RENDER, CET6Mod.OnRender)
 CET6Mod:AddCallback(ModCallbacks.MC_EXECUTE_CMD, CET6Mod.OnExecuteCommand)
